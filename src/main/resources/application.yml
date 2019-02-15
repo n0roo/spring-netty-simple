@@ -1,7 +1,0 @@
-
-netty:
-  port: 8081
-  boss-count: 1
-  worker-count: 10
-  keep-alive: true
-  backlog: 100
