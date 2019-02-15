@@ -15,7 +15,6 @@ import java.net.InetSocketAddress;
 public class Server {
 
 	private final ServerBootstrap serverBootstrap;
-
 	private final InetSocketAddress inetSocketAddress;
 
 	private Channel channel;

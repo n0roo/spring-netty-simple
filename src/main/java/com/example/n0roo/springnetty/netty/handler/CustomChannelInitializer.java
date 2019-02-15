@@ -14,13 +14,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@Qualifier("customChannelInitializer")
 public class CustomChannelInitializer extends ChannelInitializer<SocketChannel> {
 
 
 	@Autowired
-	@Qualifier("customServerHandler")
-	private ChannelInboundHandlerAdapter channelInboundHandlerAdapter;
+	private CustomServerHandler customServerHandler;
 
 	private static final StringDecoder DECODER = new StringDecoder();
 	private static final StringEncoder ENCODER = new StringEncoder();
@@ -31,6 +29,6 @@ public class CustomChannelInitializer extends ChannelInitializer<SocketChannel> 
 		pipeline.addLast(new DelimiterBasedFrameDecoder(1024*1024, Delimiters.lineDelimiter()));
 		pipeline.addLast(DECODER);
 		pipeline.addLast(ENCODER);
-		pipeline.addLast(channelInboundHandlerAdapter);
+		pipeline.addLast(customServerHandler);
 	}
 }

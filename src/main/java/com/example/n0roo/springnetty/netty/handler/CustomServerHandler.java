@@ -1,11 +1,14 @@
 package com.example.n0roo.springnetty.netty.handler;
 
 import com.example.n0roo.springnetty.netty.ChannelRepository;
+import com.example.n0roo.springnetty.repository.TestRepository;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 
@@ -16,6 +19,9 @@ import org.springframework.util.Assert;
 public class CustomServerHandler extends ChannelInboundHandlerAdapter {
 
 	private final ChannelRepository channelRepository;
+
+	@Autowired
+	private TestRepository testRepository;
 
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
@@ -42,7 +48,7 @@ public class CustomServerHandler extends ChannelInboundHandlerAdapter {
 		if (log.isDebugEnabled()) {
 			log.debug(stringMessage);
 		}
-
+		testRepository.getUsers();
 		String[] splitMessage = stringMessage.split("::");
 
 		if ( splitMessage.length != 2 ) {
@@ -53,6 +59,11 @@ public class CustomServerHandler extends ChannelInboundHandlerAdapter {
 		if ( channelRepository.get(splitMessage[0]) != null ) {
 			channelRepository.get(splitMessage[0]).writeAndFlush(splitMessage[1] + "\n\r");
 		}
+	}
+
+	@Override
+	public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+		super.channelReadComplete(ctx);
 	}
 
 	@Override
